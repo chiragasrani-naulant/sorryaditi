@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Aditi · I’m sorry</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#E4003A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--red:#E4003A;--cream:#F3EBDD;--ink:#1B0A10;
+  --disp:"Anton","Impact","Arial Narrow",sans-serif;--sans:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;--ser:"Instrument Serif",Georgia,serif;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html,body{height:100%;margin:0}
+body{background:var(--ink);font-family:var(--sans);overflow:hidden;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+.amb{position:fixed;inset:0;background:var(--ag,#E4003A);opacity:.55;filter:blur(70px);transform:scale(1.2);transition:background .6s}
+.wrap{position:relative;height:100%;display:grid;place-items:center}
+.story{position:relative;height:min(100%,900px);aspect-ratio:9/16;max-width:100%;overflow:hidden;border-radius:26px;container-type:inline-size;box-shadow:0 30px 80px rgba(0,0,0,.45);background:var(--ink);touch-action:manipulation;--bf:#F3EBDD}
+@media (max-width:520px){.story{border-radius:0;height:100%;width:100%;aspect-ratio:auto}}
+.bars{position:absolute;top:10px;left:10px;right:10px;display:flex;gap:3px;z-index:6}
+.bars i{flex:1;height:3px;border-radius:3px;background:color-mix(in srgb,var(--bf) 30%,transparent);overflow:hidden}
+.bars i b{display:block;height:100%;width:0;background:var(--bf)}
+.bars i.done b,.bars i.cur.stat b{width:100%;animation:none}
+.bars i.cur b{animation:fill var(--t) linear forwards}
+.paused .bars i.cur b{animation-play-state:paused}
+@keyframes fill{to{width:100%}}
+.hint{position:absolute;bottom:calc(14px + env(safe-area-inset-bottom,0px));left:0;right:0;text-align:center;font:700 .62rem var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--bf);z-index:6;pointer-events:none;transition:opacity .4s}
+
+/* slide + themes */
+.slide{position:absolute;inset:0;background:var(--bg);color:var(--fg);--ln:color-mix(in srgb,var(--fg) 45%,transparent);opacity:0;visibility:hidden;transition:opacity .5s,visibility 0s .5s;overflow:hidden}
+.slide.on{opacity:1;visibility:visible;transition:opacity .5s}
+.red{--bg:var(--red);--fg:var(--cream);--ac:var(--cream)}
+.cream{--bg:var(--cream);--fg:var(--red);--ac:var(--ink)}
+.ink{--bg:var(--ink);--fg:var(--cream);--ac:var(--red)}
+.slide::before{content:"";position:absolute;top:46px;bottom:0;left:8cqw;right:8cqw;border-inline:1px solid var(--ln);pointer-events:none}
+.nav{position:absolute;top:20px;left:0;right:0;height:27px;display:flex;justify-content:space-between;align-items:center;padding:0 8cqw;border-bottom:1px solid var(--ln);font:700 max(.6rem,2.6cqw) var(--sans);letter-spacing:.18em;text-transform:uppercase}
+.rail{position:absolute;top:47px;bottom:0;width:8cqw;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:16px 0;font:700 max(.52rem,2.2cqw) var(--sans);letter-spacing:.18em;text-transform:uppercase;writing-mode:vertical-rl;white-space:nowrap}
+.rail.l{left:0;transform:rotate(180deg)}.rail.r{right:0}
+.body{position:absolute;left:8cqw;right:8cqw;top:47px;bottom:0;padding:5cqw 7cqw 7cqw;display:flex;flex-direction:column;justify-content:center}
+.body>*{position:relative}
+
+/* type */
+.d{font-family:var(--disp);font-weight:400;text-transform:uppercase;line-height:.92;margin:0}
+.d1{font-size:clamp(3rem,21cqw,6.6rem)}.d2{font-size:clamp(2.2rem,15cqw,4.8rem)}.d3{font-size:clamp(1.6rem,10.5cqw,3.4rem)}
+.lab{font:700 max(.6rem,2.6cqw)/1.2 var(--sans);letter-spacing:.18em;text-transform:uppercase;opacity:.85;margin:0 0 3cqw}
+.p{font:500 max(.9rem,3.9cqw)/1.5 var(--sans);max-width:34ch;margin:3cqw 0 0}
+.ser{font-family:var(--ser);font-style:italic;font-weight:400;font-size:max(1.25rem,6cqw);line-height:1.25;max-width:24ch;margin:3cqw 0 0}
+.ac{color:var(--ac)}
+.ln{display:block;overflow:hidden;padding:.05em 0}
+.ln>span{display:block;transform:translateY(112%)}
+.on .ln>span{animation:rev .95s cubic-bezier(.2,.85,.2,1) both;animation-delay:calc(var(--d,0)*1s)}
+@keyframes rev{from{transform:translateY(112%)}to{transform:none}}
+.in{opacity:0}
+.on .in{animation:up .85s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--d,0)*1s)}
+.on .pop{animation-name:pop;animation-duration:.9s;animation-timing-function:cubic-bezier(.2,1.4,.4,1)}
+@keyframes up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.3) rotate(-14deg)}to{opacity:1;transform:rotate(var(--r,0deg))}}
+.bob{display:inline-block}.on .bob{animation:bob 3s ease-in-out infinite;animation-delay:var(--b,0s)}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-9px) rotate(5deg)}}
+.fl{position:absolute;bottom:-50px;opacity:0;pointer-events:none;color:var(--fg)}
+.on .fl{animation:rise var(--t) linear infinite;animation-delay:var(--dl)}
+@keyframes rise{0%{transform:translateY(0) rotate(0);opacity:0}12%{opacity:.5}100%{transform:translateY(-120vh) rotate(50deg);opacity:0}}
+
+/* components */
+.fr{--n:13px;--cp:polygon(var(--n) 0,calc(100% - var(--n)) 0,100% var(--n),100% calc(100% - var(--n)),calc(100% - var(--n)) 100%,var(--n) 100%,0 calc(100% - var(--n)),0 var(--n));background:var(--fg);clip-path:var(--cp);padding:1.5px;margin:3cqw 0}
+.fr>div{background:var(--bg);clip-path:var(--cp);padding:5cqw 6cqw}
+.stk{width:25cqw;height:25cqw;border-radius:50%;background:var(--fg);color:var(--bg);display:grid;place-items:center;text-align:center;font:400 max(1rem,5.4cqw)/1 var(--disp);text-transform:uppercase;--r:10deg;transform:rotate(10deg)}
+.stk b{display:block;font-weight:400;font-size:1.9em}
+.mq{margin:4cqw -7cqw;border-block:1px solid var(--ln);overflow:hidden;white-space:nowrap;font:400 max(1.4rem,7.4cqw) var(--disp);text-transform:uppercase;padding:1.6cqw 0}
+.mq div{display:inline-block}.on .mq div{animation:mq 14s linear infinite}
+@keyframes mq{to{transform:translateX(-50%)}}
+.num3{display:grid;grid-template-columns:auto 1fr;gap:4cqw;align-items:baseline;padding:3.6cqw 0;border-top:1px solid var(--ln);font:700 max(.95rem,4.2cqw)/1.3 var(--sans)}
+.num3 b{font:400 11cqw/1 var(--disp);opacity:.9}
+.arch{flex:1;min-height:0;aspect-ratio:3/4;max-width:100%;align-self:center;margin:-7cqw 0 0;border-radius:999px 999px 0 0;overflow:hidden;background:var(--cream);position:relative;z-index:2;display:grid;place-items:center}
+.arch .h{font:400 62cqw/1 var(--disp);color:var(--red);margin-top:10cqw}
+.arch::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 45%,var(--red));mix-blend-mode:multiply}
+.x{position:absolute!important;left:2cqw;top:41%;z-index:3;width:15cqw;height:15cqw;border-radius:50%;background:var(--cream);color:var(--red);display:grid;place-items:center;font:400 8cqw/1 var(--disp);--r:-12deg}
+.tape{position:absolute!important;left:-6cqw;right:-6cqw;bottom:13cqw;z-index:4;background:var(--cream);color:var(--red);font:400 max(1.1rem,5.4cqw) var(--disp);letter-spacing:.06em;text-transform:uppercase;padding:2cqw 0;text-align:center;white-space:nowrap;transform:rotate(-5deg);--r:-5deg}
+.btn{font:700 max(.8rem,3.4cqw) var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--bg);background:var(--fg);border:0;padding:3.2cqw 5cqw;cursor:pointer;margin-top:2cqw;align-self:flex-start;transition:transform .2s}
+.btn:hover{transform:translateY(-2px)}.btn:active{transform:scale(.97)}
+.btn.o{background:none;color:var(--fg);box-shadow:inset 0 0 0 1.5px var(--fg)}
+.btn:focus-visible,.nv:focus-visible{outline:3px solid var(--cream);outline-offset:3px}
+.btns{display:flex;gap:3cqw;flex-wrap:wrap}
+.nv{position:fixed;top:50%;width:48px;height:48px;margin-top:-24px;border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.25);color:#fff;font-size:1.3rem;cursor:pointer;display:none;transition:background .2s,transform .2s;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.nv:hover{background:rgba(0,0,0,.5);transform:scale(1.08)}
+#pv{left:max(16px,calc(50% - min(28.125vh,253px) - 72px))}#nx{right:max(16px,calc(50% - min(28.125vh,253px) - 72px))}
+@media (min-width:900px){.nv{display:block}}
+@media (max-height:700px){.body{padding-top:3cqw;padding-bottom:5cqw}.p{margin-top:2cqw}.ser{margin-top:2cqw}}
+@media (prefers-reduced-motion:reduce){.on .in,.on .ln>span,.on .fl,.on .bob,.on .mq div{animation-duration:.01s!important;animation-iteration-count:1!important}}
+
+/* ===== page 2 : the buttons ===== */
+.say{font:400 max(1.7rem,10cqw)/1 var(--disp);text-transform:uppercase;min-height:3.1em;display:flex;align-items:center;margin:2cqw 0 3cqw}
+.say.swap{animation:up .5s cubic-bezier(.2,.8,.2,1)}
+#ok{transform-origin:left center;font-size:max(.95rem,4cqw);padding:4cqw 6cqw}
+#arena{position:relative;flex:1;min-height:34cqw;margin-top:3cqw}
+#angry{position:absolute;margin:0;left:0;top:0;white-space:nowrap;transition:left .45s cubic-bezier(.3,1.4,.5,1),top .45s cubic-bezier(.3,1.4,.5,1),transform .2s}
+.pe{position:fixed;z-index:20;pointer-events:none;font-size:26px;animation:fly 1.4s ease-out forwards}
+@keyframes fly{to{transform:translate(var(--x),var(--y)) scale(.4);opacity:0}}
+
+/* ===== music button ===== */
+.story{--bb:#E4003A}
+.mus{position:absolute;z-index:7;top:calc(47px + 2.4cqw);right:calc(8cqw + 3.2cqw);padding:0;border:0;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent;font:inherit}
+.mus::after{content:"";position:absolute;inset:-8px}
+.mus .mi{--n:max(6px,1.8cqw);display:flex;align-items:center;gap:max(7px,2.2cqw);height:max(30px,8.6cqw);padding:0 max(10px,3cqw);background:var(--bf);color:var(--bb);transition:background .5s,color .5s,transform .2s;
+  clip-path:polygon(var(--n) 0,calc(100% - var(--n)) 0,100% var(--n),100% calc(100% - var(--n)),calc(100% - var(--n)) 100%,var(--n) 100%,0 calc(100% - var(--n)),0 var(--n))}
+.mus:hover .mi{transform:translateY(-2px)}.mus:active .mi{transform:scale(.95)}
+.mus:focus-visible{outline:3px solid var(--bf);outline-offset:3px}
+.mus svg{display:block;width:max(13px,3.8cqw);height:max(13px,3.8cqw);fill:currentColor}
+.mus .pa{display:none}.mus.playing .pa{display:block}.mus.playing .pl{display:none}
+.eq{display:flex;align-items:flex-end;gap:max(2px,.6cqw);height:max(11px,3.2cqw)}
+.eq i{display:block;width:max(2px,.7cqw);height:100%;background:currentColor;transform:scaleY(.28);transform-origin:50% 100%;transition:transform .3s}
+.playing .eq i{animation:eqb 1.05s ease-in-out infinite}
+.playing .eq i:nth-child(2){animation-duration:.8s;animation-delay:-.35s}
+.playing .eq i:nth-child(3){animation-duration:1.2s;animation-delay:-.7s}
+.playing .eq i:nth-child(4){animation-duration:.9s;animation-delay:-.2s}
+@keyframes eqb{0%,100%{transform:scaleY(.25)}50%{transform:scaleY(1)}}
+.paused .eq i{animation-play-state:paused}
+@media (prefers-reduced-motion:reduce){.playing .eq i{animation:none;transform:scaleY(.7)}}
+</style>
+</head>
+<body>
+<div class="amb" id="amb"></div>
+<div class="wrap">
+  <div class="story" id="story">
+    <div class="bars" id="bars"></div>
+    <div id="slides"></div>
+    <div class="hint" id="hint">tap to continue · hold to pause · sound on ♪</div>
+    <button class="mus" id="mus" type="button" title="Rangeen · Hasan Raheem" aria-label="Play music" aria-pressed="false"><span class="mi"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="pl" d="M8 5v14l11-7z"/><g class="pa"><rect x="6" y="5" width="4.2" height="14"/><rect x="13.8" y="5" width="4.2" height="14"/></g></svg><span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span></span></button>
+  </div>
+</div>
+<button class="nv" id="pv" type="button" aria-label="Previous">←</button>
+<button class="nv" id="nx" type="button" aria-label="Next">→</button>
+
+<script>
+/* ===== EDIT ME: all the words live here ===== */
+const LINES=("Plsss, I’m really sorry.|I’ll never do this again.|Please don’t be angry with me.|I know I was stupid.|I promise I’ll think before I act.|You mean way too much to me for this.|I’m really, really sorry, Aditi.|I won’t repeat this mistake. Promise.|Plsss, forgive me just this once.|I hate it when you’re upset with me.|I’ll do better. I swear.|Please? With a cherry on top?|I’m sorry for being an idiot.|You’re right, and I’m wrong.|I’ll listen more, I promise.|Plsss, don’t stay angry.|I never wanted to hurt you.|I’m sorry for every time I repeated it.|Give me one more chance, please.|I’ll make it up to you, I promise.|I’m a very sorry Chirag right now.|Plsss, say you’re not angry anymore.|I’ll never do this again, pinky promise.|I messed up, and I own it.|Please, my favourite person.|I’m sorry. I’m sorry. I’m sorry.|I’ll be better, starting today.|Plsss, smile for me.|I know sorry isn’t enough, but I’m sorry.|I’ll learn from this, I promise.|I’m not making excuses. I’m just sorry.|Your anger is fair. My mistake is bigger.|Plsss, don’t ignore me.|I’ll treat you better, always.|I’m really bad at being without your smile.|I promise to not be this stupid again.|Please don’t give up on me.|I’ll never repeat this, cross my heart.|I’m so sorry, truly.|Plsss, I’ll even buy you chai.|I’ll do anything to make it right.|I felt terrible the moment I did it.|You deserve better, and I’ll try to be better.|Plsss, talk to me.|I’m sorry for being careless with you.|I’ll think twice from now on.|I miss your normal, happy self.|Plsss, don’t be mad. I’m begging.|I learned my lesson, I promise.|I take it all back.|Sorry, sorry, sorry, a hundred times sorry.|I’ll never do this again. Never ever.|You’re too important to lose over my nonsense.|Please let me fix this.|Plsss, just one smile?|I’m a fool, but I’m your fool.|I’m sorry for what I did and how I made you feel.|Next time, I’ll choose better. I promise.|Plsss, forgive this dumb boy.|I won’t do it again, I swear on everything.|Be angry if you want, but know I’m sorry.|I’m really trying to be better.|I’ll make you laugh again, I promise.|Plsss, I can’t handle you being angry.|You didn’t deserve that.|I’m sorry for not thinking.|I’ll fix myself, one mistake at a time.|Please, Aditi, just this once.|I’ll never take you for granted.|Sorry for the bakchodi. It won’t happen again.|Plsss, I’ll be good. Promise.|I know I keep saying it, but I mean it this time.|I’ll show you with actions, not just words.|Please don’t stay mad at me.|I’m sorry for every bad moment I caused.|I’ll be more careful, always.|Plsss, a little forgiveness?|I’m sorry from the bottom of my heart.|I’ll never put you through this again.|You’re my favourite, and I messed up.|Plsss, be nice to me. I’m trying.|I’ll listen first, speak later.|I regret it so much.|Please believe me, I’m really sorry.|I’ll do better, and you’ll see it.|Plsss, don’t shut me out.|I won’t make the same mistake twice.|My bad, truly. Completely my bad.|I’ll be the version you deserve.|Plsss, I’ll do whatever you say.|I’m sorry, and I mean every word.|Don’t be angry, my day is ruined without you.|I promise to be thoughtful, always.|Sorry for being such a dumbo.|Plsss, give me a chance to prove it.|I’ll never hurt you like this again.|I know I’m annoying, but I’m sorry.|Let me make it up to you, please.|I swear I’ll change.|Plsss, one tiny forgiveness?|You’re stuck with me, so please forgive me.|I’m sorry, Aditi. Truly, deeply.|I’ll never repeat this mistake. Never.|Plsss, stop being angry. I’ll cry.|Forgive me? Please, pretty please?|I’m sorry, and I’ll prove it.|Okay, I’m done joking. I’m just really sorry.|Plsss, press the other button. 🥺").split("|");
+
+const L=(t,d=0)=>`<span class="ln"><span style="--d:${d}">${t}</span></span>`;
+const MQ=t=>`<div class="mq in" style="--d:.2"><div>${(t+" · ").repeat(10)}</div></div>`;
+const S=[
+ { th:"red", ch:"Sorry", t:0, fl:"♥", html:`
+  <span class="lab in" style="--d:.1">A very sorry story</span>
+  <h1 class="d" style="font-size:clamp(3.2rem,25cqw,7.4rem)">${L("SORRY,",.2)}${L("ADITI.",.4)}</h1>
+  <p class="ser in" style="--d:.9">I did some nonsense, and I know it hurt you.</p>
+  <p class="p in" style="--d:1.4">I know I’m very stupid, and I keep repeating the exact mistakes I promised I wouldn’t. That’s on me, never on you. I’m really, really sorry.</p>
+  <div class="btns in" style="--d:1.9"><button class="btn" id="go2" type="button">One more page →</button></div>` },
+ { th:"red", ch:"Your move", t:0, lock:true, html:`
+  <span class="lab in" style="--d:.1">Your move</span>
+  <div class="say" id="say">So… are we okay?</div>
+  <div class="btns in" style="--d:.5"><button class="btn" id="ok" type="button">Chal, it’s okay 🤍</button></div>
+  <div class="lab" id="count" style="margin:3cqw 0 0;min-height:1.3em"></div>
+  <div id="arena"><button class="btn o" id="angry" type="button">I’m still angry</button></div>` },
+ { th:"cream", ch:"Thank you", t:0, lock:true, fl:"♥", html:`
+  <span class="lab in" style="--d:.1">Epilogue</span>
+  <h2 class="d" style="font-size:clamp(3rem,22cqw,6.6rem)">${L("THANK YOU,",.3)}<span class="ac">${L("ADITI.",.5)}</span></h2>
+  <p class="ser in" style="--d:1.3;font-size:max(1.1rem,5.2cqw)">I’ll listen more, think before I act, and I won’t repeat this. Promise.</p>
+  <div class="d in" style="--d:2.4;margin-top:3cqw;font-size:clamp(1.5rem,9cqw,2.9rem)">Sorry, again.<br><span class="ac">Always yours, Chirag.</span></div>
+  <div class="btns in" style="--d:3"><button class="btn" id="replay" type="button">Replay ↺</button></div>` }
+];
+const DUR=7500, TH={red:["#F3EBDD","#E4003A"],cream:["#E4003A","#F3EBDD"],ink:["#F3EBDD","#1B0A10"]};
+/* ============================================ */
+
+const $=id=>document.getElementById(id);
+const slides=$("slides"), bars=$("bars"), story=$("story"), amb=$("amb");
+let cur=-1, held=false;
+const rnd=(a,b)=>a+Math.random()*(b-a), pad=n=>String(n).padStart(2,"0");
+
+S.forEach((s,i)=>{
+  const el=document.createElement("section"); el.className="slide "+s.th;
+  let fl=""; if(s.fl) for(let k=0;k<10;k++) fl+=`<span class="fl" style="left:${rnd(10,90)}%;font-size:${rnd(18,38)}px;--t:${rnd(7,12)}s;--dl:${rnd(0,6)}s">${s.fl}</span>`;
+  el.innerHTML=`${fl}<div class="nav"><span>Aditi</span><span>Sorry</span><span>Chirag</span></div>
+   <div class="rail l"><span>Aditi × Chirag</span><span>${pad(i+1)} / ${pad(S.length)}</span></div>
+   <div class="rail r"><span>${s.ch}</span><span>Sorry 2026</span></div>
+   <div class="body">${s.html}</div>`;
+  slides.appendChild(el);
+  const b=document.createElement("i"); b.innerHTML="<b></b>"; bars.appendChild(b);
+});
+const els=[...slides.children], segs=[...bars.children];
+
+function count(el){
+  const to=+el.dataset.to, suf=el.dataset.suf||"", t0=performance.now()+(+el.dataset.delay||0)*1000;
+  (function f(t){ const p=Math.min(1,Math.max(0,(t-t0)/1500)), e=1-Math.pow(1-p,3); el.textContent=Math.round(to*e)+suf; if(p<1) requestAnimationFrame(f); })(performance.now());
+}
+function show(n){
+  n=Math.max(0,Math.min(S.length-1,n)); if(n===cur) return;
+  cur=n; story.classList.remove("paused");
+  els.forEach((e,i)=>e.classList.toggle("on",i===n));
+  segs.forEach((b,i)=>{ b.className=i<n?"done":i===n?"cur":""; b.style.removeProperty("--t");
+    if(i===n){ const a=S[n].t===undefined?DUR:S[n].t; if(a) b.style.setProperty("--t",a+"ms"); else b.classList.add("stat"); } });
+  els[n].querySelectorAll("[data-to]").forEach(count);
+  const th=TH[S[n].th]; story.style.setProperty("--bf",th[0]); story.style.setProperty("--bb",th[1]); amb.style.setProperty("--ag",S[n].th==="red"?"#E4003A":S[n].th==="cream"?"#F3EBDD":"#5a1426");
+  $("hint").style.opacity=n===0?.9:0;
+  if(n===1) setTimeout(()=>moveAngry(true),60);
+}
+const locked=()=>!!S[cur].lock;
+const next=()=>{ if(!locked()) show(cur+1); }, prev=()=>{ if(cur!==2) show(cur-1); };
+segs.forEach(b=>b.addEventListener("animationend",()=>{ if(b.classList.contains("cur")) next(); }));
+
+let ht=null;
+story.addEventListener("pointerdown",e=>{ if(e.target.closest("button")) return; held=false; ht=setTimeout(()=>{held=true;story.classList.add("paused");hold(true);},220); });
+story.addEventListener("pointerup",e=>{ clearTimeout(ht); if(held){ story.classList.remove("paused"); held=false; hold(false); return; }
+  if(e.target.closest("button")||locked()) return;
+  const r=story.getBoundingClientRect(); (e.clientX-r.left)<r.width*.3?prev():next(); });
+story.addEventListener("pointercancel",()=>{clearTimeout(ht); story.classList.remove("paused"); held=false; hold(false);});
+story.addEventListener("contextmenu",e=>e.preventDefault());
+document.addEventListener("keydown",e=>{ if(e.key==="ArrowRight"||e.key===" "){e.preventDefault();next();} if(e.key==="ArrowLeft") prev(); });
+$("nx").onclick=next; $("pv").onclick=prev;
+$("go2").addEventListener("click",()=>show(1));
+
+/* ===== page 2 : the buttons ===== */
+const say=$("say"), cnt=$("count"), okb=$("ok"), ang=$("angry"), arena=$("arena");
+let n=0, bag=[];
+const nextLine=()=>{
+  if(!bag.length){ bag=LINES.map((_,i)=>i); for(let i=bag.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [bag[i],bag[j]]=[bag[j],bag[i]]; } }
+  return LINES[bag.pop()];
+};
+function moveAngry(first){
+  const W=Math.max(0,arena.clientWidth-ang.offsetWidth), H=Math.max(0,arena.clientHeight-ang.offsetHeight);
+  ang.style.left=(first?0:rnd(0,W))+"px"; ang.style.top=(first?H*.3:rnd(0,H))+"px";
+}
+ang.addEventListener("click",()=>{
+  n++;
+  say.classList.remove("swap"); void say.offsetWidth; say.classList.add("swap");
+  say.textContent=nextLine();
+  cnt.textContent="angry clicks · "+n;
+  okb.style.transform="scale("+Math.min(1+n*.03,1.35)+")";
+  moveAngry(false);
+});
+okb.addEventListener("click",()=>{
+  const r=okb.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
+  for(let i=0;i<28;i++){
+    const p=document.createElement("div"); p.className="pe"; p.textContent=["🤍","♥","✨","🥹"][i%4];
+    p.style.left=cx+"px"; p.style.top=cy+"px"; p.style.setProperty("--x",rnd(-250,250)+"px"); p.style.setProperty("--y",rnd(-300,200)+"px");
+    document.body.appendChild(p); setTimeout(()=>p.remove(),1500);
+  }
+  setTimeout(()=>show(2),800);
+});
+$("replay").addEventListener("click",()=>{
+  n=0; cnt.textContent=""; say.textContent="So… are we okay?"; okb.style.transform="";
+  show(0); restartSong();
+});
+
+/* ===== background music: Rangeen · Hasan Raheem (rangeen.mp3, same folder) ===== */
+const mus=$("mus"), song=()=>$("song");
+let want=false, auto=false, fadeId=0;
+const syncUI=()=>{ mus.classList.toggle("playing",want); mus.setAttribute("aria-pressed",String(want)); mus.setAttribute("aria-label",want?"Pause music":"Play music"); };
+function ramp(a,to,ms,done){ cancelAnimationFrame(fadeId); const from=a.volume,t0=performance.now();
+  (function f(t){ const p=Math.min(1,Math.max(0,(t-t0)/ms)); a.volume=from+(to-from)*p; if(p<1) fadeId=requestAnimationFrame(f); else if(done) done(); })(t0); }
+async function startSong(){
+  want=true; syncUI(); const a=song(); if(!a) return;
+  cancelAnimationFrame(fadeId);
+  if(!a.paused){ ramp(a,1,300); return; }
+  try{ a.volume=0; await a.play(); if(want) ramp(a,1,1600); }
+  catch(e){ if(e&&e.name==="NotAllowedError"&&want){ want=false; syncUI(); } }
+}
+function stopSong(){ want=false; syncUI(); const a=song(); if(a&&!a.paused) ramp(a,0,350,()=>{ if(!want) a.pause(); }); }
+function hold(on){ const a=song(); if(!a||!want) return;
+  if(on){ cancelAnimationFrame(fadeId); a.pause(); }
+  else{ a.volume=1; a.play().catch(()=>{}); } }
+function restartSong(){ const a=song(); if(!a) return; try{ a.currentTime=0; }catch(e){} if(want&&a.paused) startSong(); }
+mus.addEventListener("click",e=>{ e.stopPropagation(); auto=true; want?stopSong():startSong(); });
+const firstTap=e=>{ if(auto) return;
+  if(e.type==="keydown"&&![" ","ArrowRight","ArrowLeft","Enter"].includes(e.key)) return;
+  if(e.target&&e.target.closest&&e.target.closest("#mus")) return;
+  startSong().then(()=>{ if(want) auto=true; }); };
+["pointerup","touchend","click","keydown"].forEach(t=>document.addEventListener(t,firstTap,{capture:true,passive:true}));
+document.addEventListener("DOMContentLoaded",()=>{ startSong().then(()=>{ if(want) auto=true; }); });
+
+show(0);
+</script>
+<audio id="song" preload="auto" loop onerror="document.getElementById('mus').hidden=true" src="rangeen.mp3"></audio>
+</body>
+</html>
